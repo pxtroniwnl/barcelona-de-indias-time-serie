@@ -1,4 +1,4 @@
-## Serie temporal de la laguna de Barcelona de Indias
+# 🏞️Serie temporal de la laguna de Barcelona de Indias
 
 Este repositorio contiene un flujo de trabajo en Python y Jupyter Notebook para construir una **serie temporal de indicadores de agua** sobre la laguna de **Barcelona de Indias (Cartagena, Colombia)** utilizando imágenes satelitales de **Sentinel‑2** a través de **Google Earth Engine (GEE)**.
 
