@@ -48,5 +48,3 @@ El objetivo principal de este notebook es procesar series temporales de datos de
 El análisis permite observar variaciones estacionales claras, identificando periodos de máxima expansión vegetal. El notebook incluye herramientas para exportar estos datos y visualizar las fechas con mayor densidad vegetal de forma automática.
 
 ---
-**Autor:** Alejandro Patrón Montero  
-**Institución:** Universidad Tecnológica de Bolívar (UTB)
