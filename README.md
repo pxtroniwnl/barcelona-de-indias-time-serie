@@ -8,7 +8,7 @@ Este proyecto implementa un flujo de trabajo avanzado de **Ciencia de Datos** y 
 
 ## 📌 Descripción del Problema
 La gestión de cuerpos hídricos en zonas residenciales de alto valor ambiental, como Barcelona de Indias, requiere un monitoreo constante. El exceso de vegetación acuática (macrófitas) puede indicar procesos de eutrofización. Este proyecto busca responder:
-1.  **¿Cómo ha cambiado la laguna desde el año 2000?**
+1.  **¿Cómo ha cambiado la laguna desde antes?**
 2.  **¿Podemos predecir con precisión el área de vegetación para el próximo año?**
 
 ---
