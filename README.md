@@ -1,121 +1,52 @@
-# 🏞️Serie temporal de la laguna de Barcelona de Indias
+# Análisis de Cobertura Vegetal en Zonas de Laguna (Sentinel-1 SAR)
 
-Este repositorio contiene un flujo de trabajo en Python y Jupyter Notebook para construir una **serie temporal de indicadores de agua** sobre la laguna de **Barcelona de Indias (Cartagena, Colombia)** utilizando imágenes satelitales de **Sentinel‑2** a través de **Google Earth Engine (GEE)**.
+Este repositorio contiene un Jupyter Notebook diseñado para el monitoreo de la dinámica de vegetación en cuerpos de agua utilizando imágenes de radar de apertura sintética (SAR) de la misión **Sentinel-1** a través de **Google Earth Engine (GEE)**.
 
-El objetivo principal es:
+## 💡 Descripción del Proyecto
 
-- **Delimitar de forma estable la laguna** mediante índices espectrales de agua.
-- **Filtrar ruido de tierra firme, vegetación y construcciones** alrededor del cuerpo de agua.
-- **Generar una serie temporal limpia** de métricas (por ejemplo, área de espejo de agua) para análisis ambientales.
+El objetivo principal de este notebook es procesar series temporales de datos de retrodispersión (backscatter) para identificar y cuantificar la presencia de vegetación (macrófitas o vegetación flotante) en una laguna específica. A diferencia de los sensores ópticos, el radar Sentinel-1 permite el monitoreo constante incluso en condiciones de nubosidad persistente.
 
----
+### Características principales:
+* **Acceso a Datos**: Uso de la API de Google Earth Engine para acceder a la colección `COPERNICUS/S1_GRD`.
+* **Procesamiento Espacial**: Definición de una Región de Interés (ROI) y aplicación de máscaras de agua fijas.
+* **Análisis de Series Temporales**: Generación de métricas de área (m²) y porcentaje de cobertura vegetal a lo largo del tiempo.
+* **Visualización Interactiva**: Uso de `geemap` y `ipyleaflet` para visualizar mapas con umbrales de polarización VV.
+* **Análisis Estadístico**: Identificación de picos estacionales de crecimiento.
 
-## Contenido del repositorio
+## 🛠️ Tecnologías Utilizadas
 
-- `v1_zona_lag.ipynb`: cuaderno principal donde se:
-  - Inicializa la sesión con Earth Engine (`ee.Authenticate`, `ee.Initialize`).
-  - Define el **polígono de interés (ROI)** de la laguna con coordenadas en formato `[longitud, latitud]`.
-  - Descarga y procesa colecciones de imágenes de **Sentinel‑2**.
-  - Aplica el índice **MNDWI (Modified Normalized Difference Water Index)** para resaltar agua.
-  - Binariza el índice según un **umbral definido** (por ejemplo, `mndwi.gt(0.026)`) para generar una máscara de agua.
-  - Construye una **máscara espacial fija** (contorno estable de la laguna) usando el promedio de un año, que se usa como filtro estático.
-  - Extrae y organiza los resultados en tablas (p. ej. con `pandas`) y visualizaciones.
+* **Lenguaje**: Python 3
+* **Plataforma**: Google Colab / Jupyter Notebook
+* **Bibliotecas Clave**:
+    * `ee`: Google Earth Engine API.
+    * `geemap`: Visualización interactiva de datos geoespaciales.
+    * `pandas`: Manejo de series temporales y estructuras de datos.
+    * `matplotlib`: Generación de gráficos de tendencias.
+    * `ipyleaflet`: Controles de mapas interactivos y widgets.
 
-En versiones futuras se pueden añadir más cuadernos, scripts o directorios para:
+## 📊 Flujo de Trabajo
 
-- Exportar resultados (`.csv`, `.geojson`, figuras).
-- Probar distintos índices o umbrales.
-- Integrar modelos estadísticos o de machine learning sobre la serie temporal generada.
+1.  **Autenticación**: Conexión con Google Earth Engine.
+2.  **Filtrado de Datos**: Selección de imágenes Sentinel-1 con polarización VV y VH, filtradas por fecha y localización.
+3.  **Segmentación**: Aplicación de umbrales (ej. `VV > -15`) para diferenciar el agua libre de la vegetación emergente/flotante.
+4.  **Cálculo de Áreas**: Transformación de píxeles clasificados en medidas de superficie (m²).
+5.  **Visualización**: Generación de gráficos de cobertura (%) y comparación visual de fechas específicas.
 
----
+## 🚀 Cómo usar este Notebook
 
-## Requisitos
+1.  Clona este repositorio.
+2.  Asegúrate de tener una cuenta activa en [Google Earth Engine](https://earthengine.google.com/).
+3.  Instala las dependencias necesarias:
+    ```bash
+    pip install earthengine-api geemap pandas matplotlib
+    ```
+4.  Abre `Zona_lago.ipynb` en tu entorno preferido (se recomienda Google Colab para facilitar la autenticación).
+5.  Sigue las celdas de ejecución para procesar tus propios activos o los ejemplos incluidos.
 
-Para ejecutar el proyecto localmente necesitas:
+## 📈 Ejemplo de Resultados
 
-- **Python 3.8+**
-- Cuenta activa de **Google Earth Engine** vinculada a tu correo.
-- Entorno con las siguientes librerías de Python:
-
-```bash
-pip install earthengine-api geemap pandas matplotlib
-```
-
-Dependiendo de la evolución del cuaderno, también podrían utilizarse otras bibliotecas de análisis y visualización.
-
----
-
-## Cómo ejecutar el cuaderno
-
-1. **Clonar el repositorio**
-
-   ```bash
-   git clone <URL_DE_ESTE_REPO>
-   cd barcelona-de-indias-time-serie
-   ```
-
-2. **(Opcional pero recomendado) Crear un entorno virtual**
-
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate   # En Linux/WSL
-   # .venv\Scripts\activate    # En Windows PowerShell
-   ```
-
-3. **Instalar dependencias**
-
-   ```bash
-   pip install earthengine-api geemap pandas matplotlib
-   ```
-
-4. **Autenticarte en Google Earth Engine**
-
-   En el primer bloque del cuaderno se utilizan:
-
-   ```python
-   import ee
-   ee.Authenticate(auth_mode="notebook")
-   ee.Initialize()
-   ```
-
-   Sigue las instrucciones en pantalla para iniciar sesión con la cuenta que tiene acceso a GEE.
-
-5. **Abrir el cuaderno**
-
-   Ejecuta Jupyter Lab o Jupyter Notebook:
-
-   ```bash
-   jupyter lab
-   # o
-   jupyter notebook
-   ```
-
-   Luego abre `v1_zona_lag.ipynb` y ejecuta las celdas en orden.
+El análisis permite observar variaciones estacionales claras, identificando periodos de máxima expansión vegetal. El notebook incluye herramientas para exportar estos datos y visualizar las fechas con mayor densidad vegetal de forma automática.
 
 ---
-
-## Flujo de trabajo resumido
-
-- **Inicialización**: conexión con Google Earth Engine y carga de librerías.
-- **Definición de la ROI**: polígono de la laguna de Barcelona de Indias.
-- **Selección de datos**: imágenes Sentinel‑2 sobre la ROI y rango temporal de interés.
-- **Índice de agua (MNDWI)**: cálculo del índice, análisis de histogramas y selección de umbral.
-- **Máscara fija de la laguna**: construcción de un contorno estable usando promedios anuales.
-- **Serie temporal**: extracción de valores agregados (por ejemplo, área de agua) para cada fecha.
-- **Visualización y análisis**: gráficos y tablas para interpretar la dinámica de la laguna.
-
----
-
-## Notas y posibles extensiones
-
-- Ajustar el **umbral del MNDWI** según la calidad de las imágenes y la época del año.
-- Probar otros índices (NDWI clásico, AWEI, etc.) o combinar varios índices.
-- Incorporar datos climáticos (precipitación, temperatura) para relacionar la serie de agua con condiciones meteorológicas.
-- Publicar tableros interactivos o mapas web a partir de los resultados.
-
----
-
-## Licencia
-
-La licencia de este proyecto aún no está definida explícitamente. Añade aquí tu licencia preferida (por ejemplo, MIT, GPL, Creative Commons) según el uso que quieras permitir.
-
+**Autor:** Alejandro Patrón Montero  
+**Institución:** Universidad Tecnológica de Bolívar (UTB)
