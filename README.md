@@ -1,4 +1,4 @@
-# Análisis de Cobertura Vegetal en Zonas de Laguna (Sentinel-1 SAR)
+# Análisis de Cobertura Vegetal en Zonas de Laguna de Barcelo de Indias
 
 Este repositorio contiene un Jupyter Notebook diseñado para el monitoreo de la dinámica de vegetación en cuerpos de agua utilizando imágenes de radar de apertura sintética (SAR) de la misión **Sentinel-1** a través de **Google Earth Engine (GEE)**.
 
