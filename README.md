@@ -2,7 +2,6 @@
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Earth Engine](https://img.shields.io/badge/Google%20Earth%20Engine-API-green)
-![Status](https://img.shields.io/badge/Status-Completado-brightgreen)
 
 Este proyecto implementa un flujo de trabajo avanzado de **Ciencia de Datos** y **Teledetección** para analizar la evolución histórica de la vegetación acuática en la zona de Barcelona de Indias, Cartagena. Mediante el uso de satélites de radar y ópticos, se reconstruye una serie de tiempo de 25 años y se aplican modelos estocásticos para predecir el comportamiento del ecosistema en 2026.
 
