@@ -1,0 +1,18 @@
+[project]
+name = "barcelona-de-indias-time-serie"
+version = "0.1.0"
+description = "Análisis conjunto de series de tiempo meteorológicas (IDEAM) e índices de vegetación satelitales para la laguna de Barcelona de Indias (Cartagena)."
+requires-python = ">=3.12"
+dependencies = [
+    "folium>=0.17",
+    "ipykernel>=6.29",
+    "jupyter>=1.0",
+    "matplotlib>=3.9",
+    "nbconvert>=7.16",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "scipy>=1.14",
+]
+
+[tool.uv]
+package = false
