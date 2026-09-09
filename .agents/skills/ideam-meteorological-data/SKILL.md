@@ -25,7 +25,7 @@ Columnas: `Estacion, CodigoEstacion, FechaObservacion, ValorObservado`. La preci
 
 ## Reproducir la exportación
 
-Los notebooks `precipitacioonIDEAM.ipynb`, `temperaturaIDEAM.ipynb`, `humedad_del_aire_IDEAM.ipynb`, `velocidad_vientoIDEAM.ipynb`, `direccion_vientoIDEAM.ipynb`, `presion_atmosfericaIDEAM.ipynb` descargan del portal de IDEAM:
+Los notebooks de `notebook/ideam/` descargan del portal de IDEAM:
 
 1. Se leen los CSV fuente (p. ej. `Precipitación_20260818_SOLO_BOLIVAR.csv`, `Temperatura_Ambiente_del_Aire_20260818_SOLO_BOLIVAR.csv`) que NO están versionados en el repo (descarga manual del portal).
 2. Se filtran por la estación más cercana al ROI (Rafael Núñez) y se guardan en `data/ideam/`.

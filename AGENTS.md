@@ -12,16 +12,16 @@ Ciencia de Datos y Teledeteccion para monitorear y predecir la cobertura de vege
 
 | Archivo | Contenido |
 | --- | --- |
-| `analisis_buchon.ipynb` | Analisis conjunto: carga, remuestreo diario de meteorologicas, suavizado de todas las series (media movil, exponencial, Savitzky-Golay) y visualizacion. Aqui se anadira la fase ML. |
-| `pulling_time_serie_indices.ipynb` | Extraccion de indices desde Google Earth Engine. Requiere Earth Engine (`ee.Authenticate`) y depende de `earthengine-api`/`geemap` que NO estan en el entorno base. |
-| `precipitacioonIDEAM.ipynb`, `temperaturaIDEAM.ipynb`, `humedad_del_aire_IDEAM.ipynb`, `velocidad_vientoIDEAM.ipynb`, `direccion_vientoIDEAM.ipynb`, `presion_atmosfericaIDEAM.ipynb` | Descarga/limpieza/export de series del IDEAM hacia `data/ideam/`. Requieren CSV fuente descargados del portal IDEAM (no versionados). |
+| `notebook/vegetacion/02_analisis_buchon.ipynb` | Analisis conjunto: carga, remuestreo diario de meteorologicas, suavizado de todas las series (media movil, exponencial, Savitzky-Golay) y visualizacion. Aqui se anadira la fase ML. |
+| `notebook/vegetacion/01_extraccion_indices.ipynb` | Extraccion de indices desde Google Earth Engine. Requiere Earth Engine (`ee.Authenticate`) y depende de `earthengine-api`/`geemap` que NO estan en el entorno base. |
+| `notebook/ideam/*.ipynb` | Descarga/limpieza/export de series del IDEAM hacia `data/ideam/`. Requieren CSV fuente descargados del portal IDEAM (no versionados). |
 
 ### Datos
 
 | Ruta | Contenido |
 | --- | --- |
 | `data/ideam/*.csv` | Series meteorologicas de alta frecuencia (cada 10-20 min) de la estacion AEROPUERTO RAFAEL NUNEZ (codigo 0014015020). Columnas `Estacion, CodigoEstacion, FechaObservacion, ValorObservado`; la precipitacion anade `paso_s` e `intensidad_mmh`. |
-| `data/raw/time-serie-indices` | Areas de vegetacion (m2) por indice. Columnas `fecha, fai, id_imagen, ndavi, b4, b8, b11, vv-vh`. Periodo ~2017 a 2026. |
+| `data/time-serie-indices.csv` | Areas de vegetacion (m2) por indice. Columnas `fecha, fai, id_imagen, ndavi, b4, b8, b11, vv-vh`. Periodo ~2017 a 2026. |
 | `data/raw/landsat8.csv` | Referencia historica (~2013): `fecha, area_m2_vegetacion`. |
 | `data/raw/images-paper1/*.png` | Imagenes de referencia del paper (picos NDAVI/VV-VH, cobertura, series). |
 
@@ -49,7 +49,7 @@ uv sync
 uv run jupyter lab
 
 # Ejecutar un notebook headless (guardando salidas en el propio archivo)
-uv run jupyter nbconvert --to notebook --execute --inplace analisis_buchon.ipynb
+uv run jupyter nbconvert --to notebook --execute --inplace notebook/vegetacion/02_analisis_buchon.ipynb
 ```
 
 - No hay lint ni typecheck configurado. Verificar los notebooks ejecutandolos con nbconvert (arriba) o comprobando que no haya errores en las celdas.
@@ -71,8 +71,8 @@ Consultar el skill relevante ANTES de trabajar en esas areas para ahorrar tokens
 
 | Skill | Cuando usarlo |
 | --- | --- |
-| `remote-sensing-vegetation` | Indices NDAVI/FAI/VV-VH, mascaras/umbrales del ROI, lectura de `data/raw/time-serie-indices`, extraccion GEE. |
-| `time-series-analysis` | Remuestreo, suavizado, alineacion temporal; modificaciones a `analisis_buchon.ipynb`. |
+| `remote-sensing-vegetation` | Indices NDAVI/FAI/VV-VH, mascaras/umbrales del ROI, lectura de `data/time-serie-indices.csv`, extraccion GEE. |
+| `time-series-analysis` | Remuestreo, suavizado, alineacion temporal; modificaciones a `notebook/vegetacion/02_analisis_buchon.ipynb`. |
 | `eda-data-science` | Perfilado, calidad, gaps, cobertura temporal, correlaciones de la data. |
 | `ml-regression-timeseries` | Fase ML: features, lags, split temporal, modelos, metricas, anti-fuga. |
 | `ideam-meteorological-data` | Columnas/formato IDEAM, estacion Rafael Nunez, reproduccion de exportaciones. |

@@ -4,84 +4,71 @@
 ![Google Earth Engine](https://img.shields.io/badge/Google%20Earth%20Engine-API-green)
 ![uv](https://img.shields.io/badge/uv-env-purple.svg)
 
-Este proyecto implementa un flujo de trabajo de Ciencia de Datos y Teledeteccion para analizar la evolucion historica de la vegetacion acuatica (buchon) en la zona de la laguna de Barcelona de Indias, Cartagena.
+Proyecto de Ciencia de Datos y Teledeteccion para monitorear la vegetacion acuatica (buchon) en la laguna de Barcelona de Indias, Cartagena. Integra datos meteorologicos del IDEAM con indices satelitales de Sentinel-1 y Sentinel-2.
 
-## Estado actual del proyecto
+## Estructura
 
-Hasta ahora el proyecto ha logrado:
+```text
+.
+├── notebook/
+│   ├── ideam/                 # Procesamiento de variables meteorologicas
+│   └── vegetacion/            # Extraccion y analisis de cobertura vegetal
+├── data/
+│   ├── ideam/                 # Series procesadas de la estacion Rafael Nunez
+│   ├── time-serie-indices.csv # Serie satelital principal de vegetacion
+│   └── raw/                   # Datos historicos y figuras del paper
+├── pyproject.toml
+└── uv.lock
+```
 
-1. **Extraccion de series de tiempo meteorologicas (IDEAM)**: descarga, limpieza y exportacion de las series de la estacion mas cercana al area de interes: **Aeropuerto Rafael Nunez**. Variables: precipitacion, temperatura, humedad relativa, velocidad del viento, direccion del viento y presion atmosferica.
-2. **Reconstruccion de series de tiempo de vegetacion (satelital)**: mediante Google Earth Engine se calculan sobre el espejo de agua de la laguna los indices de area de vegetacion:
-   - **NDAVI** (Normalized Difference Aquatic Vegetation Index, Sentinel-2)
-   - **FAI** (Floating Algae Index, Sentinel-2)
-   - Bandas opticas **B4 (Red)**, **B8 (NIR)**, **B11 (SWIR)** de Sentinel-2
-   - **VV-VH** (Sentinel-1, radar)
-3. **Analisis conjunto y visualizacion**: un notebook (`analisis_buchon.ipynb`) carga toda la data, remuestrea las series meteorologicas a diario (alta frecuencia cruda) y grafica todas las series con suavizado, comparando metodos (media movil, suavizado exponencial y Savitzky-Golay) para preparar la fase de prediccion.
+## Notebooks
 
-## Estructura del repositorio
+### IDEAM
 
-### Notebooks
-
-| Archivo | Descripcion |
+| Notebook | Descripcion breve |
 | --- | --- |
-| `analisis_buchon.ipynb` | Analisis conjunto de toda la data: carga, remuestreo a diario de las meteorologicas, suavizado de todas las series y visualizacion conjunta. Punto de partida para la prediccion de cobertura de vegetacion con Machine Learning. |
-| `pulling_time_serie_indices.ipynb` | Extraccion de los indices de vegetacion desde Google Earth Engine sobre la laguna. Requiere autenticacion de Earth Engine (`ee.Authenticate`). |
-| `precipitacioonIDEAM.ipynb` | Descarga/limpieza/export de la serie de precipitacion de la estacion Rafael Nunez hacia `data/ideam`. |
-| `temperaturaIDEAM.ipynb` | Descarga/limpieza/export de la serie de temperatura. |
-| `humedad_del_aire_IDEAM.ipynb` | Descarga/limpieza/export de la serie de humedad del aire. |
-| `velocidad_vientoIDEAM.ipynb` | Descarga/limpieza/export de la serie de velocidad del viento. |
-| `direccion_vientoIDEAM.ipynb` | Descarga/limpieza/export de la serie de direccion del viento. |
-| `presion_atmosfericaIDEAM.ipynb` | Descarga/limpieza/export de la serie de presion atmosferica. |
+| `notebook/ideam/01_precipitacion_ideam.ipynb` | Limpia la precipitacion y exporta la serie de Rafael Nunez. |
+| `notebook/ideam/02_temperatura_ideam.ipynb` | Limpia la temperatura del aire y exporta la serie de la estacion. |
+| `notebook/ideam/03_humedad_aire_ideam.ipynb` | Limpia la humedad relativa del aire y exporta la serie de la estacion. |
+| `notebook/ideam/04_velocidad_viento_ideam.ipynb` | Procesa y exporta la velocidad del viento. |
+| `notebook/ideam/05_direccion_viento_ideam.ipynb` | Procesa y exporta la direccion del viento. |
+| `notebook/ideam/06_presion_atmosferica_ideam.ipynb` | Procesa y exporta la presion atmosferica. |
 
-Los notebooks de IDEAM leen un archivo fuente descargado desde el portal del IDEAM (por ejemplo `Precipitacion_20260818_SOLO_BOLIVAR.csv`) que **no esta versionado** en el repositorio, y exportan la serie limpia de la estacion a `data/ideam/`.
+Los notebooks IDEAM usan CSV fuente descargados manualmente desde el portal IDEAM, que no se versionan. Todos filtran la estacion **AEROPUERTO RAFAEL NUNEZ** y guardan los resultados en `data/ideam/`.
 
-### Datos
+### Vegetacion
+
+| Notebook | Descripcion breve |
+| --- | --- |
+| `notebook/vegetacion/01_extraccion_indices.ipynb` | Extrae con Google Earth Engine las areas de vegetacion por indice Sentinel-1 y Sentinel-2; guarda las figuras en `data/raw/images-paper1/`. |
+| `notebook/vegetacion/02_analisis_buchon.ipynb` | Integra meteorologia e indices, remuestrea a diario, suaviza las series y prepara el analisis para Machine Learning. |
+
+## Datos
 
 | Ruta | Contenido |
 | --- | --- |
-| `data/ideam/*.csv` | Series meteorologicas de alta frecuencia (cada 10-20 minutos) de la estacion Aeropuerto Rafael Nunez. Columnas `Estacion, CodigoEstacion, FechaObservacion, ValorObservado` (la precipitacion ademas incluye `paso_s` e `intensidad_mmh`). |
-| `data/raw/time-serie-indices` | Serie de areas de vegetacion (m2) por indice sobre la laguna. Columnas: `fecha, fai, id_imagen, ndavi, b4, b8, b11, vv-vh`. Periodo ~2017 a 2026. |
-| `data/raw/landsat8.csv` | Serie historica de area de vegetacion (m2) derivada de Landsat 8 (referencia historica: ~2013). Columnas `fecha, area_m2_vegetacion`. |
-| `data/raw/images-paper1/*.png` | Imagenes de referencia generadas para el articulo/paper (picos de NDAVI y VV-VH sobre la laguna, cobertura porcentual, series de los 6 indices). |
+| `data/ideam/*.csv` | Series de alta frecuencia de temperatura, humedad, precipitacion, viento y presion de la estacion Rafael Nunez. |
+| `data/time-serie-indices.csv` | Areas de vegetacion en m2 por fecha e indice: `fai`, `ndavi`, `b4`, `b8`, `b11` y `vv-vh`. |
+| `data/raw/landsat8.csv` | Serie historica de referencia derivada de Landsat 8. |
+| `data/raw/images-paper1/` | Figuras de referencia y resultados graficos para el paper. |
 
-### Entorno y configuracion
+## Uso local
 
-| Archivo | Descripcion |
-| --- | --- |
-| `pyproject.toml` | Definicion del proyecto y dependencias (gestionado con uv). |
-| `uv.lock` | Bloqueo de versiones exactas de dependencias. |
-| `.python-version` | Version de Python gestionada por uv (3.12). |
-| `.gitignore` | Exclusiones de archivos (entorno virtual, caches de Python/Jupyter). |
-
-## Como inicializar el proyecto en local
-
-El proyecto usa [uv](https://docs.astral.sh/uv/) para gestionar el entorno virtual y las dependencias. Requiere tener `uv` instalado (Python 3.12 se gestiona automaticamente).
+El entorno se administra con [uv](https://docs.astral.sh/uv/).
 
 ```bash
-# 1. Clonar el repositorio
-git clone git@github.com:pxtroniwnl/barcelona-de-indias-time-serie.git
-cd barcelona-de-indias-time-serie
-
-# 2. Crear el entorno e instalar dependencias
 uv sync
-
-# 3. Activar el entorno (opcional)
-source .venv/bin/activate
-
-# 4. Abrir los notebooks
 uv run jupyter lab
 ```
 
-### Ejecutar el notebook de analisis desde terminal
-
-Tambien se puede ejecutar el notebook de analisis completo desde la terminal (guarda las salidas en el propio archivo):
+Para ejecutar el analisis completo desde la terminal:
 
 ```bash
-uv run jupyter nbconvert --to notebook --execute --inplace analisis_buchon.ipynb
+uv run jupyter nbconvert --to notebook --execute --inplace notebook/vegetacion/02_analisis_buchon.ipynb
 ```
 
-### Consideraciones
+## Consideraciones
 
-- **Earth Engine**: el notebook `pulling_time_serie_indices.ipynb` requiere `earthengine-api` y `geemap`, que **no estan incluidos** en el entorno base (instalacion pesada). Para reproducir la extraccion satelital se necesitan ademas credenciales de Google Earth Engine (`ee.Authenticate`).
-- **Fuentes IDEAM**: los archivos originales descargados del IDEAM (CSV a nivel departamento) no estan versionados; los datos ya procesados de la estacion si lo estan en `data/ideam/`.
-- **Fase de Machine Learning**: la siguiente etapa del proyecto es predecir la cobertura de vegetacion usando las series meteorologicas diarias suavizadas como caracteristicas y los indices (`ndavi`, `vv-vh`) como variable objetivo. Esa fase se anadira en el notebook `analisis_buchon.ipynb`.
+- El notebook de extraccion requiere `earthengine-api`, `geemap` y credenciales de Google Earth Engine mediante `ee.Authenticate`.
+- Los CSV crudos del IDEAM no estan en el repositorio; las series procesadas si estan disponibles en `data/ideam/`.
+- La siguiente fase del proyecto es modelar la cobertura vegetal con las variables meteorologicas diarias como caracteristicas y los indices `ndavi` y `vv-vh` como objetivos.

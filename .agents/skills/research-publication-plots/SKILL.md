@@ -1,13 +1,13 @@
 ---
 name: research-publication-plots
-description: Use when creating or styling figures for this project (matplotlib): publication-quality plots, rcParams (serif font), color palettes already used in analisis_buchon.ipynb, date formatting, high-DPI saving, and consistent labels. Applies to analysis and ML results in the notebooks.
+description: Use when creating or styling figures for this project (matplotlib): publication-quality plots, rcParams (serif font), color palettes already used in notebook/vegetacion/02_analisis_buchon.ipynb, date formatting, high-DPI saving, and consistent labels. Applies to analysis and ML results in the notebooks.
 ---
 
 # Gráficas Publicables
 
 ## Convenciones del repo
 
-Las figuras de `analisis_buchon.ipynb` usan este estilo:
+Las figuras de `notebook/vegetacion/02_analisis_buchon.ipynb` usan este estilo:
 
 - `rcParams` orientado a publicación: fuente serif para ticks/ejes y títulos en español, figsize amplio y `dpi` alto para exportación.
 - Colores concretos ya usados:

@@ -1,16 +1,16 @@
 ---
 name: ml-regression-timeseries
-description: Use when building the Machine Learning stage of this project: predicting vegetation coverage (ndavi or vv-vh) from smoothed daily meteorological features, feature engineering with lags, time-based splits, regression models, metrics, or avoiding data leakage. Apply in analisis_buchon.ipynb.
+description: Use when building the Machine Learning stage of this project: predicting vegetation coverage (ndavi or vv-vh) from smoothed daily meteorological features, feature engineering with lags, time-based splits, regression models, metrics, or avoiding data leakage. Apply in notebook/vegetacion/02_analisis_buchon.ipynb.
 ---
 
 # Machine Learning: Regresión sobre Series Temporales
 
-Objetivo de la fase ML (a implementar en `analisis_buchon.ipynb`): predecir la cobertura de vegetación de la laguna de Barcelona de Indias a partir de variables meteorológicas.
+Objetivo de la fase ML (a implementar en `notebook/vegetacion/02_analisis_buchon.ipynb`): predecir la cobertura de vegetación de la laguna de Barcelona de Indias a partir de variables meteorológicas.
 
 ## Diseño acordado
 
 - **Features**: series meteorológicas diarias suavizadas (precipitación, temperatura, humedad, velocidad/dirección del viento, presión) + ingeniería con lags.
-- **Target**: `ndavi` y/o `vv-vh` (área de vegetación en m²) de `data/raw/time-serie-indices`.
+- **Target**: `ndavi` y/o `vv-vh` (área de vegetación en m²) de `data/time-serie-indices.csv`.
 - **Alineación**: índice/radar SIN remuestrear (observaciones puntuales); meteorológicas alineadas por fecha exacta (o day-before/after con tolerancia pequeña). Evitar inventar observaciones en fechas sin imagen.
 
 ## Reglas obligatorias (anti-fuga)

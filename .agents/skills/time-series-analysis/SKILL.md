@@ -1,21 +1,21 @@
 ---
 name: time-series-analysis
-description: Use when loading, resampling, smoothing, aligning, or merging time series on this project (IDEAM meteorological data, vegetation indices), or when modifying analisis_buchon.ipynb and its smoothing functions (media_movil, suavizado_exp, savgol_con_gaps).
+description: Use when loading, resampling, smoothing, aligning, or merging time series on this project (IDEAM meteorological data, vegetation indices), or when modifying notebook/vegetacion/02_analisis_buchon.ipynb and its smoothing functions (media_movil, suavizado_exp, savgol_con_gaps).
 ---
 
 # Análisis de Series Temporales
 
 ## Convenciones del proyecto
 
-Todo el análisis conjunto vive en `analisis_buchon.ipynb` (Python + pandas + matplotlib). Reglas ya acordadas:
+Todo el análisis conjunto vive en `notebook/vegetacion/02_analisis_buchon.ipynb` (Python + pandas + matplotlib). Reglas ya acordadas:
 
 - Las series meteorológicas IDEAM (alta frecuencia, cada 10-20 min) se remuestrean a **diario** con media (`resample('1D').mean()`); la **precipitación usa suma** (`resample('1D').sum()`), no media.
 - Todas las series (meteorológicas e índices) se **suavizan** con una ventana de `VENTANA_SUAVIZADO_DIAS` (definida como constante al inicio del notebook, típicamente ~5-15 días).
-- Tamaños de punto de referencia tras el remuestreo diario: precipitación 955,217 → 4,368 filas; temperatura 639,720 → 3,746; humedad 644,646 → 3,753; velocidad_viento 459,932 → 3,451; direccion_viento 484,539 → 3,612; presion_atmosferica 578,649 → 844. Los índices (`data/raw/time-serie-indices`) quedan como ~1,253 observaciones sin remuestrear.
+- Tamaños de punto de referencia tras el remuestreo diario: precipitación 955,217 → 4,368 filas; temperatura 639,720 → 3,746; humedad 644,646 → 3,753; velocidad_viento 459,932 → 3,451; direccion_viento 484,539 → 3,612; presion_atmosferica 578,649 → 844. Los índices (`data/time-serie-indices.csv`) quedan como ~1,253 observaciones sin remuestrear.
 
 ## Funciones de suavizado ya implementadas
 
-Definidas en `analisis_buchon.ipynb`:
+Definidas en `notebook/vegetacion/02_analisis_buchon.ipynb`:
 
 - `media_movil(serie, ventana=VENTANA_SUAVIZADO_DIAS)`: media móvil centrada (rolling mean).
 - `suavizado_exp(serie, span=VENTANA_SUAVIZADO_DIAS)`: suavizado exponencial (`ewm`).

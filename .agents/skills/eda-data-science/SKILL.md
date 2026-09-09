@@ -1,6 +1,6 @@
 ---
 name: eda-data-science
-description: Use when doing exploratory data analysis of this repo's datasets (IDEAM meteorological CSVs, vegetation series in data/raw/time-serie-indices, landsat8.csv), profiling, gap analysis, outliers, coverage over time, or data-quality checks before modeling.
+description: Use when doing exploratory data analysis of this repo's datasets (IDEAM meteorological CSVs, vegetation series in data/time-serie-indices.csv, landsat8.csv), profiling, gap analysis, outliers, coverage over time, or data-quality checks before modeling.
 ---
 
 # Análisis Exploratorio de Datos (EDA)
@@ -8,7 +8,7 @@ description: Use when doing exploratory data analysis of this repo's datasets (I
 ## Datasets del repo
 
 - `data/ideam/*.csv`: 6 variables meteorológicas de la estación Aeropuerto Rafael Núñez (alta frecuencia). Archivos: `precipitacion_*.csv`, `temperatura_*.csv`, `humedad_*.csv`, `velocidad_viento_*.csv`, `direccion_viento_*.csv`, `presion_atmosferica_*.csv` (la presión arranca 2023-09-18).
-- `data/raw/time-serie-indices`: índices de vegetación satelitales (área m²), irregular.
+- `data/time-serie-indices.csv`: índices de vegetación satelitales (área m²), irregular.
 - `data/raw/landsat8.csv`: referencia histórica `fecha, area_m2_vegetacion`.
 
 ## Flujo recomendado
