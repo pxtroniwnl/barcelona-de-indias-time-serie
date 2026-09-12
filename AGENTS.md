@@ -4,7 +4,7 @@ Guia para agentes que trabajen en este repositorio. El objetivo es evitar re-des
 
 ## Panorama del proyecto
 
-Ciencia de Datos y Teledeteccion para monitorear y predecir la cobertura de vegetacion acuatica (buchon) sobre la laguna de Barcelona de Indias (Cartagena). Combina series meteorologicas del IDEAM (estacion Aeropuerto Rafael Nunez) con indices de vegetacion satelitales (Sentinel-2 y Sentinel-1 via Google Earth Engine). La fase de Machine Learning ya esta implementada en `notebook/vegetacion/02_analisis_buchon.ipynb` (seccion 9): prediccion del indice `vv-vh` (observacion cruda y estado de cobertura suavizado EWM) con features causales, backtesting walk-forward, modelos clasicos/ensamble y Deep Learning (PyTorch). El target `ndavi` se descarto por su alto porcentaje de ceros.
+Ciencia de Datos y Teledeteccion para monitorear y predecir la cobertura de vegetacion acuatica (buchon) sobre la laguna de Barcelona de Indias (Cartagena). Combina series meteorologicas del IDEAM (estacion Aeropuerto Rafael Nunez) con indices de vegetacion satelitales (Sentinel-2 y Sentinel-1 via Google Earth Engine). La fase de Machine Learning ya esta implementada en `notebook/vegetacion/02_analisis_buchon.ipynb` (seccion 9, refactor de 4 modelos): prediccion del indice `vv-vh` (observacion cruda y estado de cobertura suavizado EWM-7 ~30 dias) con features causales meteorologicas + lags, comparando ElasticNet, RandomForest, LSTM (PyTorch) y Prophet contra baselines (persistencia, media de 3 obs, estado EWM-5) bajo backtesting walk-forward con refit en cadencia operativa (clasicos cada observacion; LSTM/Prophet cada 25/10), metricas robustas (pool completo + sub-periodo stress 2022+, percentiles de error, bandas ±500/1000 m², estabilidad multi-semilla) y plots publicables. El target `ndavi` se descarto por su alto porcentaje de ceros. Resultados clave: ElasticNet top en el estado (R²≈0.95) y LSTM mejor en el crudo 2022+ (R²≈0.36); Prophet y LSTM quedan por debajo en el periodo completo (se documenta como contraste honesto).
 
 ## Estructura del repositorio
 
@@ -12,7 +12,7 @@ Ciencia de Datos y Teledeteccion para monitorear y predecir la cobertura de vege
 
 | Archivo | Contenido |
 | --- | --- |
-| `notebook/vegetacion/02_analisis_buchon.ipynb` | Analisis conjunto: carga, remuestreo diario de meteorologicas, suavizado de todas las series (media movil, exponencial, Savitzky-Golay) y visualizacion. Incluye la fase ML completa (seccion 9): features causales, backtesting walk-forward, clasicos/ensamble y Deep Learning (PyTorch). |
+| `notebook/vegetacion/02_analisis_buchon.ipynb` | Analisis conjunto: carga, remuestreo diario de meteorologicas, suavizado de todas las series (media movil, exponencial, Savitzky-Golay) y visualizacion. Incluye la fase ML completa (seccion 9, refactor de 4 modelos): features causales, backtesting walk-forward, ElasticNet/RandomForest (clasicos), LSTM (PyTorch) y Prophet, con metricas robustas y contraste contra baselines. |
 | `notebook/vegetacion/01_extraccion_indices.ipynb` | Extraccion de indices desde Google Earth Engine. Requiere Earth Engine (`ee.Authenticate`) y depende de `earthengine-api`/`geemap` que NO estan en el entorno base. |
 | `notebook/ideam/*.ipynb` | Descarga/limpieza/export de series del IDEAM hacia `data/ideam/`. Requieren CSV fuente descargados del portal IDEAM (no versionados). |
 
@@ -29,7 +29,7 @@ Ciencia de Datos y Teledeteccion para monitorear y predecir la cobertura de vege
 
 | Archivo | Descripcion |
 | --- | --- |
-| `pyproject.toml` | Proyecto uv y dependencias: pandas, numpy, matplotlib, scipy, folium, jupyter, ipykernel, nbconvert, scikit-learn, statsmodels, torch, xgboost. NO incluye earthengine-api/geemap (anadir via `uv add` si se re-extraen indices en GEE). |
+| `pyproject.toml` | Proyecto uv y dependencias: pandas, numpy, matplotlib, scipy, folium, jupyter, ipykernel, nbconvert, scikit-learn, statsmodels, torch, xgboost, prophet. NO incluye earthengine-api/geemap (anadir via `uv add` si se re-extraen indices en GEE). |
 | `uv.lock` | Lock de dependencias. |
 | `.python-version` | Python 3.12 gestionado por uv. |
 | `.gitignore` | Excluye `.venv/`, caches. |
