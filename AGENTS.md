@@ -25,6 +25,12 @@ Ciencia de Datos y Teledeteccion para monitorear y predecir la cobertura de vege
 | `data/raw/landsat8.csv` | Referencia historica (~2013): `fecha, area_m2_vegetacion`. |
 | `data/raw/images-paper1/*.png` | Imagenes de referencia del paper (picos NDAVI/VV-VH, cobertura, series). |
 
+### Modelos
+
+| Ruta | Contenido |
+| --- | --- |
+| `modelos/v1/` | Artefactos exportados del refactor ML: 4 modelos (ElasticNet, RandomForest, LSTM, Prophet) x 2 modalidades (`crudo`, `estado` EWM-7), en joblib/torch/pickle + `manifiesto_v1.json` (metricas, hiperparametros, features, deps) + `modelos/README.md` (versionado v1/v2..., como cargar). Generados por la seccion 9.10 del notebook 02. |
+
 ### Configuracion
 
 | Archivo | Descripcion |
