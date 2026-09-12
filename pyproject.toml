@@ -11,7 +11,11 @@ dependencies = [
     "nbconvert>=7.16",
     "numpy>=1.26",
     "pandas>=2.2",
+    "scikit-learn>=1.9.1",
     "scipy>=1.14",
+    "statsmodels>=0.15.0",
+    "torch>=2.14.0",
+    "xgboost>=3.4.1",
 ]
 
 [tool.uv]
